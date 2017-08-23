@@ -1,3 +1,6 @@
+## This is the maths behind the article Design and analysis of stepped
+## wedge cluster randomized trials by Hussey and Hughes (2005)
+
 ## Declaring some variables to begin with
 ## No. of clusters
 I = 10
@@ -51,4 +54,8 @@ make.one.Yijk = function(i,j){
 ## One cluster without consideration of order, as
 ## I didn't think it was relevant in the end.
 replicate(N, make.one.Yijk(i = 1, j = 1))
+
+## We'll begin by calculating power the most simple way stated in the
+## text. Using weight least squares
+model.2 <- lm(Progeny ~ Parent, weights=1/SD^2)
 
