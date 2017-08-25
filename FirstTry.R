@@ -56,6 +56,7 @@ make.one.Yijk = function(i,j){
 replicate(N, make.one.Yijk(i = 1, j = 1))
 
 ## We'll begin by calculating power the most simple way stated in the
-## text. Using weight least squares
+## text. Using weight least squares, what the hell should the weights
+## be?? Hmmmmm....
 model.2 <- lm(Progeny ~ Parent, weights=1/SD^2)
 
