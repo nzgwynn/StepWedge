@@ -19,7 +19,7 @@ j = 1:T
 O = order(runif(I, 0, 1), i)
 
 ## No of individuals sampled in each cluster
-N = 150
+N = 150 # I believe I need to make this run: N = round(runif(T, 20, 500))
 k = 1:N
 
 ## Cluster effect
@@ -82,5 +82,42 @@ DT = data.frame(d,x,t,c)
 ## We'll begin by calculating power the most simple method from the
 ## text. Using weighted least squares, what the hell should the weights
 ## be?? Hmmmmm.... Method for tau and sigma know
-WLSmod <- lm(d ~ x + t + factor(c), data = DT) #weights=1/SD^2)
+WLSmod <- lm(d ~ x + factor(t) + factor(c), data = DT) #weights=1/SD^2)
+
+## To get true vals of coefs of factors(c)
+alpha - alpha[1]
+
+## To get true vals of coefs of factors(t)
+beta - beta[1]
+
+## The following 3 are used to find the variance
+## in equation 8 from article - pg 187
+U = function(x){
+  sum(x)
+}
+
+W = function(X, N){
+  sum((rowSums(X)*N)^2)
+}
+
+V = function(X, N){
+  sum(rowSums(X)^2*N)
+}
+
+## Variance function eqn 8  - pg 187
+Var = function(I, sigmaSQError, T, tau){
+  ((I*sigmaSQError)*(sigmaSQError + T*tau^2))/
+    ((I*U(x = x) - W(X = X, N = N))*sigmaSQError +
+       (U(x = x)^2 + I*T*U(x = x) - T*W(X = X, N = N) - I*V(X = X, N = N))*tau^2)
+}
+
+## Now to find the power
+Pwr = function(theta.alt, alpha){
+  pnorm((theta.alt)/ 
+          sqrt(Var(I = I, sigmaSQError = sigmaSQError, T = T, tau = tau)) - 
+          qnorm(alpha/2, mean = 0, sd = 1))
+}
+
+  
+
 
